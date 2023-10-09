@@ -1,0 +1,491 @@
+openapi: 3.0.0
+info:
+  title: CMS API
+  version: 1.0.0
+  description: API for a Content Management System
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+
+    Site:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+
+    AccessControlInput:
+      type: object
+      properties:
+        userId:
+          type: integer
+        siteId:
+          type: integer
+        pageId:
+          type: integer
+        contentId:
+          type: integer
+        permission:
+          type: string
+
+    SiteInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+
+    PageInput:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+
+paths:
+  /api/login:
+    post:
+      summary: User login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Unauthorized
+
+  /api/logout:
+    post:
+      summary: User logout
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful logout
+
+  /api/users:
+    get:
+      summary: List users
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /api/users/{userId}:
+    get:
+      summary: Get user details
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+    put:
+      summary: Update user details
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User details updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+
+    delete:
+      summary: Delete a user
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+
+  /api/sites:
+    get:
+      summary: List sites
+      tags:
+        - Sites
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of sites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
+
+    post:
+      summary: Create a new site
+      tags:
+        - Sites
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteInput'
+      responses:
+        '201':
+          description: Site created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+
+  /api/sites/{siteId}:
+    get:
+      summary: Get site details
+      tags:
+        - Sites
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Site details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '404':
+          description: Site not found
+
+    put:
+      summary: Update site details
+      tags:
+        - Sites
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteInput'
+      responses:
+        '200':
+          description: Site details updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '404':
+          description: Site not found
+
+    delete:
+      summary: Delete a site
+      tags:
+        - Sites
+      parameters:
+        - in: path
+          name: siteId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Site deleted successfully
+        '404':
+          description: Site not found
+
+  /api/pages:
+    get:
+      summary: List pages
+      tags:
+        - Pages
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of pages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+
+    post:
+      summary: Create a new page
+      tags:
+        - Pages
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageInput'
+      responses:
+        '201':
+          description: Page created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+
+  /api/pages/{pageId}:
+    get:
+      summary: Get page details
+      tags:
+        - Pages
+      parameters:
+        - in: path
+          name: pageId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Page details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '404':
+          description: Page not found
+
+    put:
+      summary: Update page details
+      tags:
+        - Pages
+      parameters:
+        - in: path
+          name: pageId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageInput'
+      responses:
+        '200':
+          description: Page details updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '404':
+          description: Page not found
+
+    delete:
+      summary: Delete a page
+      tags:
+        - Pages
+      parameters:
+        - in: path
+          name: pageId
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Page deleted successfully
+        '404':
+          description: Page not found
+
+  /api/access-control:
+    post:
+      summary: Create access control entry
+      tags:
+        - Access Control
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessControlInput'
+      responses:
+        '201':
+          description: Access control entry created successfully
+
+    put:
+      summary: Update access control entry
+      tags:
+        - Access Control
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessControlInput'
+      responses:
+        '200':
+          description: Access control entry updated successfully
+        '404':
+          description: Access control entry not found
+
+    delete:
+      summary: Delete access control entry
+      tags:
+        - Access Control
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Access control entry deleted successfully
+        '404':
+          description: Access control entry not found
