@@ -10,7 +10,7 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
+	lambda "github.com/icarus-sullivan/mock-lambda"
 )
 
 func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -37,20 +37,9 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
-		Body:       "node updated successfully",
+		Body:       "node created successfully",
 	}, nil
 
-	// resp := events.APIGatewayProxyResponse{
-	// 	StatusCode:      200,
-	// 	IsBase64Encoded: false,
-	// 	Body:            "Api is Working",
-	// 	Headers: map[string]string{
-	// 		"Content-Type":           "application/json",
-	// 		"X-MyCompany-Func-Reply": "hello-handler",
-	// 	},
-	// }
-
-	// return resp, nil
 }
 
 // func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
