@@ -1,14 +1,54 @@
 openapi: 3.0.0
 info:
-  title: common cms service
+  title: Common CMS Service
   version: 1.0.0
 tags:
+  
+  - name: node
+    description: Operations related to node
   - name: site
+    description: Operations related to sites
+  - name: sub-site
     description: Operations related to sites
   - name: page
     description: Operations related to pages
 paths:
-  /sites:
+  
+  /nodes:
+    get:
+      summary: Get nodes
+      operationId: getnodes
+      tags:
+        - node
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Create node
+      operationId: postNode
+      tags:
+        - node
+      responses:
+        '201':
+          description: Node created successfully
+    put:
+      summary: Update Node
+      operationId: putNode
+      tags:
+        - node
+      responses:
+        '200':
+          description: Successful response
+    delete:
+      summary: Delete node
+      operationId: deleteNode
+      tags:
+        - node
+      responses:
+        '204':
+          description: Node deleted successfully
+   
+  /node/sites:
     get:
       summary: Get Sites
       operationId: getSites
@@ -41,6 +81,109 @@ paths:
       responses:
         '204':
           description: Site deleted successfully
+          
+          
+  /sites/{siteId}/subsites:
+    get:
+      summary: Get  All Sub-sites for a Site
+      operationId: getSubSites
+      tags:
+        - sub-site
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Create Sub-site for a Site
+      operationId: postSubSite
+      tags:
+        - sub-site
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+  
+      responses:
+        '201':
+          description: Sub-site created successfully
+          
+  /sites/{siteId}/subsites/{subsiteId}:
+    put:
+      summary: Update sub-site
+      operationId: putsubSite
+      tags:
+        - sub-site
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+            
+        - name: subsiteId
+          in: path
+          required: true
+          description: ID of the sub-site
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+    get:
+      summary: Get  All Sub-sites under a subsites
+      operationId: getSubSiteUnderSub
+      tags:
+        - sub-site
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+            
+        - name: subsiteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Create Sub-site for a Site
+      operationId: postSubSited
+      tags:
+        - sub-site
+      parameters:
+        - name: siteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+            
+        - name: subsiteId
+          in: path
+          required: true
+          description: ID of the site
+          schema:
+            type: integer
+  
+      responses:
+        '201':
+          description: Sub-site created successfully
   /sites/{siteId}/pages:
     get:
       summary: Get Pages for a Site
