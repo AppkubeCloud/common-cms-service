@@ -1,0 +1,305 @@
+openapi: 3.0.0
+info:
+  title: Site Management API
+  description: API for managing site and their associated data
+  version: 1.0.0
+servers:
+  - url: http://example.com/api
+paths:
+  /nodes/{node_id}/site:
+    get:
+      summary: Get all site by node ID
+      description: Retrieves all site associated with the specified node ID from the database.
+      parameters:
+        - in: path
+          name: node_id
+          required: true
+          schema:
+            type: string
+          description: ID of the node to retrieve site for.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Site'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+    post:
+      summary: Create a new site within the specified node.
+      description: Creates a new site, interacts with GitHub, and stores commit details.
+      parameters:
+        - in: path
+          name: node_id
+          required: true
+          schema:
+            type: string
+          description: ID of the node in which the site will be created.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                siteName:
+                  type: string
+                  description: Name of the site being created
+                nodeID:
+                  type: string
+                  description: ID of the associated node
+              required:
+                - siteName
+      responses:
+        '201':
+          description: Site created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  site_id:
+                    type: string
+                    description: ID of the created site
+                  file_path:
+                    type: string
+                    description: Path of the created file
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+  /nodes/{node_id}/site/{site_id}:
+    get:
+      summary: Get site details by ID within a node
+      description: Retrieves details of a site within the specified node ID from the database.
+      parameters:
+        - in: path
+          name: node_id
+          required: true
+          schema:
+            type: string
+          description: ID of the node to retrieve site details for.
+        - in: path
+          name: site_id
+          required: true
+          schema:
+            type: string
+          description: ID of the site to retrieve. If not provided, returns details of all site within the node.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '404':
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+    put:
+      summary: Update site details
+      description: Update the details of a site within the specified node ID
+      parameters:
+        - in: path
+          name: node_id
+          required: true
+          schema:
+            type: string
+          description: ID of the node containing the site to be updated
+        - in: path
+          name: site_id
+          required: true
+          schema:
+            type: string
+          description: ID of the site to be updated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                site_name:
+                  type: string
+                  description: The new name for the site
+      responses:
+        '200':
+          description: Site updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  site_id:
+                    type: string
+                    description: ID of the updated site
+                  site_name:
+                    type: string
+                    description: New name of the site
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+    delete:
+      summary: Delete site by ID within a node
+      description: Deletes a site within the specified node ID from the database and GitHub repository.
+      parameters:
+        - in: path
+          name: node_id
+          required: true
+          schema:
+            type: string
+          description: ID of the node containing the site to be deleted
+        - in: path
+          name: site_id
+          required: true
+          schema:
+            type: string
+          description: ID of the site to be deleted
+      responses:
+        '204':
+          description: Site deleted successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+components:
+  schemas:
+    Site:
+      type: object
+      properties:
+        site_id:
+          type: string
+          description: ID of the site
+        node_id:
+          type: string
+          description: ID of the node associated with the site
+        site_name:
+          type: string
+          description: Name of the site
+        site_metadata:
+          type: object
+          description: Metadata associated with the site
+        file_path:
+          type: string
+          description: Path of the file
