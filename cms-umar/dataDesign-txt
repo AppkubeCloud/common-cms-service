@@ -1,0 +1,26 @@
+CREATE TABLE sites (
+    site_id VARCHAR(255) PRIMARY KEY,
+    node_id VARCHAR(255) REFERENCES nodes(node_id),
+    site_name VARCHAR(255),
+    site_metadata JSONB,
+    file_path VARCHAR(255)
+);
+
+Based on the provided table structure, here's an example of how the data might be designed:
+
+| site_id      | node_id      | site_name          | site_metadata                                             | file_path               |
+|--------------|--------------|--------------------|-----------------------------------------------------------|-------------------------|
+| 1            | node1        | Example Site 1     | {"author": "John Doe", "created_at": "2024-04-05"}        | /sites/example1/index.html |
+| 2            | node1        | Example Site 2     | {"author": "Jane Smith", "created_at": "2024-04-06"}      | /sites/example2/index.html |
+| 3            | node2        | Example Site 3     | {"author": "Alice Johnson", "created_at": "2024-04-07"}   | /sites/example3/index.html |
+
+
+
+In this example:
+
+- Each row represents a site.
+- `site_id`: Unique identifier for each site.
+- `node_id`: Identifier of the node associated with the site.
+- `site_name`: Name of the site.
+- `site_metadata`: Additional metadata associated with the site stored as JSON data.
+- `file_path`: Path to the file corresponding to the site.
