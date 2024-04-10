@@ -1,0 +1,85 @@
+Start
+
+Function getAllSites(node_id):
+    Description: Retrieve all sites associated with the specified node ID from the database.
+    
+    Input:
+        node_id: ID of the node to retrieve sites for
+    
+    Output:
+        sites: List of sites associated with the specified node
+    
+    Steps:
+        1. Query the database to retrieve all sites associated with the node_id.
+        2. If successful, return the list of sites.
+        3. If unsuccessful, return an error message.
+
+Function createSite(node_id, siteName):
+    Description: Create a new site within the specified node, interact with GitHub, and store commit details.
+    
+    Input:
+        node_id: ID of the node in which the site will be created
+        siteName: Name of the site being created
+    
+    Output:
+        site_id: ID of the created site
+        file_path: Path of the created file
+    
+    Steps:
+        1. Create a new site in the specified node.
+        2. Interact with GitHub to create the site repository and store commit details.
+        3. If successful, return the ID of the created site and the path of the created file.
+        4. If unsuccessful, return an error message.
+
+Function getSiteDetails(node_id, site_id):
+    Description: Retrieve details of a site within the specified node ID from the database.
+    
+    Input:
+        node_id: ID of the node to retrieve site details for
+        site_id: ID of the site to retrieve
+    
+    Output:
+        site_details: Details of the specified site
+    
+    Steps:
+        1. Query the database to retrieve details of the specified site within the node.
+        2. If successful, return the details of the site.
+        3. If the site is not found, return a "site not found" error message.
+        4. If unsuccessful, return an error message.
+
+Function updateSiteDetails(node_id, site_id, newSiteName):
+    Description: Update the details of a site within the specified node ID.
+    
+    Input:
+        node_id: ID of the node containing the site to be updated
+        site_id: ID of the site to be updated
+        newSiteName: The new name for the site
+    
+    Output:
+        site_id: ID of the updated site
+        site_name: New name of the site
+    
+    Steps:
+        1. Update the details of the specified site with the new name.
+        2. If successful, return the ID of the updated site and the new name of the site.
+        3. If the site is not found, return a "site not found" error message.
+        4. If unsuccessful, return an error message.
+
+Function deleteSite(node_id, site_id):
+    Description: Delete a site within the specified node ID from the database and GitHub repository.
+    
+    Input:
+        node_id: ID of the node containing the site to be deleted
+        site_id: ID of the site to be deleted
+    
+    Output:
+        success_message: Message indicating successful deletion
+    
+    Steps:
+        1. Delete the specified site within the node from the database.
+        2. If successful, delete the corresponding repository from GitHub.
+        3. If successful, return a success message.
+        4. If the site is not found, return a "site not found" error message.
+        5. If unsuccessful, return an error message.
+
+End
