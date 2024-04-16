@@ -11,19 +11,18 @@
 #
 # Happy Coding!
 
-service: cms
+service: common-cms-service
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
-plugins:
-  - serverless-offline
+
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
-  runtime: go1.x
+  runtime: nodejs18.x
 
 # you can overwrite defaults here
 #  stage: dev
@@ -51,39 +50,20 @@ provider:
 #  environment:
 #    variable1: value1
 
-package:
-  patterns:
-    - '!./**'
-    - ./bin/**
+# you can add packaging information here
+#package:
+#  patterns:
+#    - '!exclude-me.js'
+#    - '!exclude-me-dir/**'
+#    - include-me.js
+#    - include-me-dir/**
 
 functions:
   hello:
-    handler: hello/main.go
-    timeout: 600
-    events:
-      - httpApi:
-          path: /hello
-          method: get
-  world:
-    handler: world/main.go
-    events:
-      - httpApi:
-          path: /world
-          method: get
-
-
-
-  node:
-    handler: handlers/node/main.go
-    timeout: 600
-    events:
-      - httpApi:
-          path: /node
-          method: post
+    handler: handler.hello
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
-# events:
 #    events:
 #      - httpApi:
 #          path: /users/create
