@@ -237,14 +237,14 @@ async function createGitHubSiteFolder(owner, repoName, siteName, githubClient) {
     const { data: existingFile } = await githubClient.repos.getContent({
         owner,
         repo: 'cms-servie',
-        path
+        path:  '${siteName}/.gitkeep'
     });
     
     // Include the SHA hash in the request body
     const requestBody = {
         owner,
         repo: 'cms-service',
-        path,
+        path: '${siteName}/.gitkeep',
         message: 'Create site folder',
         content,
         sha: existingFile ? existingFile.sha : null // Provide the SHA hash if the file exists
